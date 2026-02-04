@@ -1,0 +1,9 @@
+system,case,api_calls,prompt_tokens,completion_tokens
+Single-Agent,hazardous_nc,1,335,1418
+Single-Agent,covid_us,1,336,1649
+ToolCall+Retries,hazardous_nc,1,335,1418
+ToolCall+Retries,covid_us,1,336,1649
+AutoGen-MAS-sim,hazardous_nc,1,335,1418
+AutoGen-MAS-sim,covid_us,1,336,1649
+MA-GeoAI,hazardous_nc,1,335,1418
+MA-GeoAI,covid_us,1,336,1649
