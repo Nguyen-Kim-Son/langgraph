@@ -25,4 +25,10 @@ The goal is to allow readers to quickly verify the expected **artifact contract*
 - These artifacts are included for **inspection and verification** only.
 - The full evaluation uses per-seed logging in `logs/runs_20260131_171928.csv`, including an `artifacts_ok` flag to confirm whether all required outputs were produced for each run.
 - If you rerun the notebook, you may generate additional artifacts (e.g., maps/figures) depending on the case definitions and configured outputs.
+  
+## Full artifacts (Google Drive)
+GitHub web upload enforces a 25MB per-file limit; therefore, this folder contains only a representative subset for quick inspection.  
+The full artifact bundle required for complete auditing (HTML/PNG outputs across cases/seeds) is available at:
+https://drive.google.com/drive/folders/13quHFzjKZbSONA6K5SJzmFHIwFMyyDlY?usp=sharing
+
 
