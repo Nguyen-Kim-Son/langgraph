@@ -1,1 +1,30 @@
+# ===== Core scientific stack =====
+numpy
+pandas
+scipy
 
+# ===== GIS stack =====
+geopandas>=0.14
+shapely>=2.0
+pyproj
+fiona
+rtree; platform_system != "Windows"
+mapclassify
+
+# ===== Plotting / mapping =====
+matplotlib>=3.7
+folium>=0.14
+branca
+
+# ===== Networking / utilities =====
+requests
+tqdm
+
+# ===== Agent / workflow =====
+langgraph>=0.2
+langchain
+langchain-google-genai
+
+# ===== Notebook support (optional if using Colab) =====
+ipykernel
+ipywidgets
