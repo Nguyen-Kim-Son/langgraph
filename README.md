@@ -16,8 +16,8 @@ It is intended to support transparent reruns and auditing of the reported GIS ex
 - `artifacts/` — a small subset of representative HTML/PNG outputs (e.g., seed=0) to verify the expected artifact contract without uploading all per-seed outputs.
 
 > **Protocol note (as reported in the paper):** the experiments follow a **two-phase evaluation protocol**:
-> Phase A performs one-time code generation per (system, case) and caches the produced program; Phase B executes cached programs for fixed seeds (0–9) without additional LLM calls.  
-> The final benchmark grid is 5 systems × 3 cases × 10 seeds = 150 end-to-end runs.
+> Phase A performs one-time code generation per (system, case) and caches the produced program; Phase B executes cached programs for fixed seeds (0-9) without additional LLM calls.  
+> The final benchmark grid is 5 systems x 3 cases x 10 seeds = 150 end-to-end runs.
 
 ---
 
