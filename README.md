@@ -1,127 +1,108 @@
-# MA-GeoAI Research Data Repository
+# MA-GeoAI Reproducibility Repository (Data + Logs + Notebook)
 
-## 📊 Overview
+## Overview
+This repository provides the **data references**, **execution notebook(s)**, and **reproducibility artifacts** (run logs and example outputs) used in the paper:
 
-This folder contains research datasets used in the paper **"MA-GeoAI: A Multi-Agent Autonomous GIS Framework for Scalable and Self-Improving Geospatial Intelligence"** by Kim-Son Nguyen and The-Vinh Nguyen.
+**“Multi-Agent Autonomous GeoAI Framework for Scalable and Self-Improving Geospatial Intelligence.”**
 
-All datasets are provided for research reproducibility and are referenced in the paper as supplementary materials for references [27], [28], and [29].
+It is intended to support transparent reruns and auditing of the reported GIS experiments under a controlled protocol (Google Colab; fixed seeds; artifact-based logging).
 
-## 📁 Dataset Inventory
+## Repository contents (what to look for)
+- `data/` — dataset files and/or dataset references used in the three case studies (see “Dataset Inventory” below).
+- `notebooks/` — the Colab notebook used to execute the multi-agent GIS pipeline (two-phase protocol).
+- `logs/` — reproducibility artifacts exported from experiments:
+  - `runs_*.csv` (per-run outcomes, artifact checks, runtime, fallback indicator)
+  - `codegen_cost_*.csv` (Phase-A API calls and token usage for cost accounting)
+- `artifacts/` — a small subset of representative HTML/PNG outputs (e.g., seed=0) to verify the expected artifact contract without uploading all per-seed outputs.
+
+> **Protocol note (as reported in the paper):** the experiments follow a **two-phase evaluation protocol**:
+> Phase A performs one-time code generation per (system, case) and caches the produced program; Phase B executes cached programs for fixed seeds (0–9) without additional LLM calls.  
+> The final benchmark grid is 5 systems × 3 cases × 10 seeds = 150 end-to-end runs.
+
+---
+
+## Dataset Inventory
 
 ### Case Study 1: Population Exposure Analysis (North Carolina)
-**Reference:** [27] U.S. Census Bureau: TIGER/Line Shapefiles
+**Reference:** U.S. Census Bureau TIGER/Line Shapefiles
 
 | File | Size | Description | Format |
 |------|------|-------------|--------|
-| `HW_Sites_EPSG4326.zip` | 249 KB | 89 hazardous waste sites in North Carolina | Shapefile (EPSG:4326) |
-| `tract_37_EPSG4326.zip` | 18 MB | 15,847 census tracts in North Carolina | Shapefile (EPSG:4326) |
-| `NC_tract_population.csv` | 157 KB | Population data by census tract | CSV |
+| `HW_Sites_EPSG4326.zip` | 249 KB | Hazardous waste sites in North Carolina | Shapefile (EPSG:4326) |
+| `tract_37_EPSG4326.zip` | 18 MB | Census tracts in North Carolina | Shapefile (EPSG:4326) |
+| `NC_tract_population.csv` | 157 KB | Population by census tract | CSV |
 
-**Purpose:** Quantify population within 1-mile buffer around hazardous sites
+**Purpose:** Quantify population within a 1-mile buffer around hazardous sites.
 
-**Original Source:** U.S. Census Bureau TIGER/Line Shapefiles  
+**Original Source (upstream):**  
 https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-line-file.html
 
 ---
 
-### Case Study 2: COVID-19 Mobility Analysis (France)
-**Reference:** [28] INSEE: International developments - Effects of the crisis
+### Case Study 2: Mobility Pattern Analysis (France)
+**Reference:** INSEE / Orange Flux Vision mobility indicators (see upstream reference)
 
 | File | Size | Description | Format |
 |------|------|-------------|--------|
-| `France.zip` | 66 KB | Time-series mobility data during lockdown periods | Shapefile/CSV |
+| `France.zip` | 66 KB | Administrative boundaries and a reproducible mobility proxy/template input | Shapefile/CSV |
 
-**Purpose:** Analyze temporal changes in mobility during COVID-19 lockdown and visualize outcomes using multi-panel plots
+**Purpose:** Produce monthly mobility change visualization (matrix + trend line + interactive December map).
 
-**Original Source:** Institut national de la statistique et des études économiques (INSEE), Orange Flux Vision data  
+**Reproducibility policy:** In the reported experiments, a **proxy/template (including optional synthetic generation)** is used to avoid dependence on intermittently unavailable upstream endpoints in Colab, while preserving the artifact contract and enabling stable auditing across seeds.
+
+**Original Source (upstream reference):**  
 https://www.insee.fr/en/statistiques/fichier/4769648/point-conj%20080920-effets-crise.pdf
 
 ---
 
-### Case Study 3: COVID-19 Mortality Analysis (US Counties)
-**Reference:** [29] CDC National Center for Health Statistics
+### Case Study 3: County-level Mortality Modeling (US)
+**Reference:** CDC National Center for Health Statistics (NCHS) provisional deaths by county (as cited in the paper)
 
 | File | Size | Description | Format |
 |------|------|-------------|--------|
-| `us-counties-2020.csv` | 35 MB | COVID-19 cases and deaths by US county (2020) | CSV |
-| `contiguous_counties.zip` | 850 KB | Shapefile of 3,142 contiguous US counties | Shapefile |
-| `ACS2020_5year_county.csv` | 1.7 MB | Demographic indicators from ACS 2020 5-year estimates | CSV |
+| `us-counties-2020.csv` | 35 MB | County-level mortality/case table used for joins and rate computation | CSV |
+| `contiguous_counties.zip` | 850 KB | Shapefile of contiguous US counties | Shapefile |
+| `ACS2020_5year_county.csv` | 1.7 MB | Demographic indicators (ACS 2020 5-year) | CSV |
 
-**Purpose:** Examine correlations between death rates and demographic indicators across 3,142 U.S. counties
+**Purpose:** Join mortality and demographic covariates, compute death-rate, and visualize choropleth + association plot.
 
-**Original Sources:**
-- COVID-19 Data: NY Times COVID-19 Data Repository
-- Shapefile: U.S. Census Bureau
+**Original sources (upstream references):**
+- CDC provisional deaths by county (paper-cited reference; see manuscript bibliography)
+- County boundaries: U.S. Census Bureau
 - Demographics: American Community Survey (ACS) 2020
 
+> Note: This repository stores a **research snapshot** used to reproduce the reported experiments; for the most current data, consult upstream sources.
+
 ---
 
-## 🔬 Usage in Research
+## How the data are used in the paper
+These datasets support tool-based GIS workflows that stress common failure modes (CRS mismatch, geometry validity, schema drift, missingness, and external-service instability). The evaluation is audited via per-run logs, explicit artifact checks, and cost-separated reporting (Phase-A code generation vs. Phase-B seeded execution).
 
-These datasets are used in the experimental validation section of the MA-GeoAI paper to demonstrate:
+## Data format specifications
+### Shapefiles (`.zip`)
+- CRS: EPSG:4326 (WGS 84) unless otherwise stated
+- ESRI Shapefile components: `.shp`, `.shx`, `.dbf`, `.prj`
 
-1. **Scalability:** Multi-agent system handling large-scale geospatial datasets
-2. **Automation:** Autonomous GIS workflow without manual intervention
-3. **Accuracy:** Reproducible results with validated geospatial analysis
-
-## 📝 Data Format Specifications
-
-### Shapefiles (.zip)
-- Coordinate System: EPSG:4326 (WGS 84)
-- Format: ESRI Shapefile compressed in ZIP
-- Components: .shp, .shx, .dbf, .prj files
-
-### CSV Files
+### CSV files
 - Encoding: UTF-8
-- Delimiter: Comma (,)
-- Header: First row contains column names
+- Delimiter: comma (`,`)
+- Header: first row contains column names
 
-## 🔄 Data Updates
+## Updates
+**Last Updated:** October 29, 2025  
+This repository contains static snapshots used for reproducibility.
 
-**Last Updated:** October 29, 2025
+## Citation
+If you use these materials, please cite the paper (currently under review/submission) and this repository URL:
+https://github.com/Nguyen-Kim-Son/langgraph
 
-These datasets are static snapshots used for research reproducibility. For the most current data, please refer to the original sources listed above.
+## License and attribution
+These datasets are aggregated from publicly available sources for academic research purposes. Please consult upstream licensing terms:
+- U.S. Census Bureau data: Public domain
+- INSEE: check INSEE usage terms
+- CDC data: check CDC usage terms
+- ACS data: Public domain
 
-## 📖 Citation
-
-If you use these datasets in your research, please cite:
-
-```bibtex
-@article{nguyen2025mageoai,
-  title={MA-GeoAI: A Multi-Agent Autonomous GIS Framework for Scalable and Self-Improving Geospatial Intelligence},
-  author={Nguyen, Kim-Son and Nguyen, The-Vinh},
-  journal={[Journal Name]},
-  year={2025},
-  note={Data available at: https://github.com/Nguyen-Kim-Son/langgraph/raw/main/data}
-}
-```
-
-## 🔗 Related Resources
-
-- **Research Paper:** [Link to paper when published]
-- **Code Repository:** https://github.com/Nguyen-Kim-Son/langgraph
-- **Jupyter Notebook:** `Multi_agent_DeepSeek.ipynb`
-
-## ⚖️ License and Attribution
-
-These datasets are aggregated from publicly available sources for academic research purposes. Please refer to original data sources for specific licensing terms:
-
-- **U.S. Census Bureau data:** Public domain
-- **INSEE data:** Check INSEE usage terms
-- **NY Times COVID data:** CC BY-NC-SA 4.0
-- **ACS data:** Public domain
-
-## 📧 Contact
-
-For questions about the datasets or research:
-
-- **Kim-Son Nguyen** - nkson@ictu.edu.vn
-- **The-Vinh Nguyen** - vinhnt@ictu.edu.vn
-
-Thai Nguyen University of Information and Communication Technology  
-Department of Information Systems / Software Engineering  
-Thai Nguyen, Vietnam
-
----
-
-**Note:** This README is generated to support the research paper submission and data reproducibility requirements.
+## Contact
+- Kim-Son Nguyen — nkson@ictu.edu.vn  
+- The-Vinh Nguyen — vinhnt@ictu.edu.vn
